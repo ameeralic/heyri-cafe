@@ -5,6 +5,9 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'logo' => env('APP_LOGO', ''),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
