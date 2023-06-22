@@ -23,7 +23,7 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
-    public function version(Request $request): ?string
+    public function version(Request $request):  ? string
     {
         return parent::version($request);
     }
@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function share(Request $request): array
+    public function share(Request $request) : array
     {
         return array_merge(parent::share($request), [
             'csrf_token' => csrf_token(),
@@ -46,12 +46,14 @@ class HandleInertiaRequests extends Middleware
             ],
             'siteLogo' => config('app.logo'),
             'siteName' => config('app.name'),
-            'is_user_logged' => Auth::check() ?? false,
+            'is_user_logged' => Auth::guard('web')->check() ?? false,
+            'is_admin_logged' => Auth::guard('web')->check() ? Auth::guard('web')->user()->can('admin') : false,
             'logged_user' => [
-                'email' => Auth::check() ? Auth::user()->email : false,
-                'full_name' => Auth::check() ? Auth::user()->full_name : false,
-                'avatar' => Auth::check() ? Auth::user()->avatar_url : false
-                ]
+                'id' => Auth::guard('web')->check() ? Auth::guard('web')->user()->id : false,
+                'email' => Auth::guard('web')->check() ? Auth::guard('web')->user()->email : false,
+                'full_name' => Auth::guard('web')->check() ? Auth::guard('web')->user()->full_name : false,
+                'avatar' => Auth::guard('web')->check() ? Auth::guard('web')->user()->avatar_url : false,
+            ],
         ]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\AdminControllers;
 
-use App\Http\Controllers\AdminControllers\TeacherController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -15,7 +14,7 @@ class AdminDashboardController extends Controller
 
     }
 
-    public function profile_info()
+    public function profileInfo()
     {
         return Inertia::render('AdminDashboard/ProfileInfo', [
             'user' => Auth::guard('web')->user(),

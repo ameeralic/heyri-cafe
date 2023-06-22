@@ -1,7 +1,8 @@
 <template>
     <Notification></Notification>
-    <Header :navMenu="navMenu"></Header>
-    <div class="max-w-4xl mx-auto">
+    <Header></Header>
+    <div class="max-w-4xl mx-auto px-4">
+        <DashboardHeader :navMenu="navMenu"></DashboardHeader>
         <slot></slot>
 
     </div>
@@ -14,16 +15,12 @@ export default {
             navMenu: [
                 {
                     text: 'Home',
-                    url: '/'
+                    url: '/dashboard'
                 },
                 {
-                    text: 'About',
-                    url: '/about'
+                    text: 'Profile Info',
+                    url: '/dashboard/profile-info'
                 },
-                {
-                    text: 'Contact',
-                    url: '/contact'
-                }
             ],
             footerLinks: [
                 {
@@ -50,7 +47,8 @@ import Notification from '../AdminDashboardLayout/components/Notification.vue';
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import Header from './Components/Header.vue'
-import Footer from './Components/Footer.vue'
+import DashboardHeader from './Components/DashboardHeader.vue';
+// import Footer from './Components/Footer.vue'
 
 // initialize components based on data attribute selectors
 onMounted(() => {

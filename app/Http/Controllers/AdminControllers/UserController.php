@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\AdminControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\FileManagement;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -16,12 +17,21 @@ class UserController extends Controller
     {
         return Inertia::render('AdminDashboard/Users/Index', [
             'users' => User::filter(
-                request(['search', 'dateStart', 'dateEnd', 'sortBy'])
+                request(['search', 'dateStart', 'dateEnd', 'sortBy', 'roles'])
             )
-            ->paginate(3)->withQueryString(),
-            'filters' => Request::only(['search', 'sortBy', 'dateStart', 'dateEnd']),
+                ->with(['roles'])->paginate(3)->withQueryString(),
+            'filters' => Request::only(['search', 'sortBy', 'dateStart', 'dateEnd', 'roles']),
+            'roles' => Role::all(),
         ]);
     }
+
+    public function create()
+    {
+        return Inertia::render('AdminDashboard/Users/Create', [
+            'roles' => Role::where('value', '!=', 'USER_ROLE')->get(),
+        ]);
+    }
+
     public function store(FileManagement $fileManagement)
     {
         // dd('ss');
@@ -33,10 +43,21 @@ class UserController extends Controller
             );
         }
 
-        User::create($attributes);
+        if ($attributes['roles']) {
+            $roles = $attributes['roles'];
+            unset($attributes['roles']);
+        }
+
+        $user = User::create($attributes);
+
+        if (isset($roles)) {
+            $user->roles()->attach($roles);
+        }
+        $user->roles()->sync([1]);
+
         if (Auth::guard('web')->check()) {
-            if(Auth::user()->can('admin')) {
-                return redirect('/admin-dashboard/users')->with('success', 'User has been created.');
+            if (Auth::user()->can('admin')) {
+                return redirect('/admin-dashboard')->with('success', 'User has been created.');
             }
             return;
         }
@@ -44,15 +65,21 @@ class UserController extends Controller
 
     }
 
+    public function edit(User $user)
+    {
+        return Inertia::render('AdminDashboard/Users/Edit', [
+            'user' => $user,
+            'user_roles' => $user->roles()->pluck('role_id'),
+            'roles' => Role::where('value', '!=', 'USER_ROLE')->get(['id', 'name', 'value']),
+        ]);
+
+    }
+
     public function update(User $user)
     {
 
-        // $student = $student->id ? $student : Auth::guard('student')->user();
-        // dd($student);
-
         $attributes = $this->validateUser($user);
         $fileManagement = new FileManagement();
-        // dd($user->avatar_url);
 
         if ($attributes['avatar']) {
             $attributes['avatar'] =
@@ -62,13 +89,11 @@ class UserController extends Controller
                 oldFile:$user->avatar,
                 path:'images/users/' . ($user['email'] !== $attributes['email'] ? $attributes['email'] : $user['email']) . '/avatar',
             );
-        } 
-        else if($user->avatar) {
+        } else if ($user->avatar) {
             $fileManagement->deleteFile(
                 fileUrl:$user->avatar
             );
         }
-        // dd($attributes['avatar']);
 
         if ($user['email'] !== $attributes['email']) {
             $fileManagement->moveFiles(
@@ -76,12 +101,18 @@ class UserController extends Controller
                 newPath:'images/users/' . $attributes['email'] . '/avatar',
                 deleteDirectory:'images/users/' . $user['email']
             );
-            $attributes['avatar'] = str_replace($user['email'], $attributes['email'], $user['avatar']);
-            // if($user->can('admin')){
-            //     config('admin.email') = $attributes['email'];
-            // }
+            $attributes['avatar'] = str_replace($user['email'], $attributes['email'], $attributes['avatar']);
         }
-
+        if (isset($attributes['roles'])) {
+            $roles = $attributes['roles'];
+            unset($attributes['roles']);
+        }
+        if (isset($roles)) {
+            // dd($roles);
+            //dd($roles === [1, 2]);
+            $user->roles()->sync($roles);
+        }
+        // $user->roles()->sync([1]);
         $user->update($attributes);
 
         return back()->with('success', 'User Profile Updated!');
@@ -97,6 +128,7 @@ class UserController extends Controller
                 'last_name' => 'required|max:50',
                 'avatar' => $user->exists ? 'nullable' : 'nullable|mimes:jpeg,png |max:2096',
                 'dob' => 'required|max:50',
+                'roles' => [Auth::guard('web')->user()->can('admin') ? 'nullable' : 'exclude'],
                 'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
                 'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user)],
                 'password' => (request()->input('password') ?? false || !$user->exists) ? 'required|confirmed|min:6' : 'exclude',
@@ -104,6 +136,7 @@ class UserController extends Controller
             ],
             [
                 'dob' => 'Date of birth required',
+                'roles' => 'Please select roles',
                 'phone_number' => 'Enter a valid Phone number with country code',
                 'avatar' => 'Upload Profile image as jpg/png format with size less than 2MB',
                 'tac' => 'Please agree to the Terms and Conditions!',

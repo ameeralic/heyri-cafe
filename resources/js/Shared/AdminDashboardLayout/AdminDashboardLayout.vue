@@ -115,19 +115,18 @@ export default {
                     ],
                 },
                 {
-                    name: "Students",
-                    link: "/admin-dashboard/students",
+                    name: "Users",
+                    link: "/admin-dashboard/users",
                     method: "get",
-                    hideIf: !this.$page.props.is_admin_logged,
                     icon: UserGroupIcon,
                     subMenu: [
                         {
                             name: "Create",
-                            link: "/admin-dashboard/students/create",
+                            link: "/admin-dashboard/users/create",
                         },
                         {
-                            name: "All Students",
-                            link: "/admin-dashboard/students",
+                            name: "All users",
+                            link: "/admin-dashboard/users",
                         },
                     ],
                 },

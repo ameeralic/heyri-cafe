@@ -2,6 +2,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3'
 import AdminDashboardLayout from './Shared/AdminDashboardLayout/AdminDashboardLayout.vue';
 import PublicPagesLayout from './Shared/PublicPagesLayout/PublicPagesLayout.vue';
+import UserDashboardLayout from './Shared/UserDashboardLayout/UserDashboardLayout.vue';
 
 createInertiaApp({
   resolve: name => {
@@ -11,7 +12,11 @@ createInertiaApp({
       page.default.layout = AdminDashboardLayout;
     }
     if (name.startsWith("Public/")) {
-      page.default.layout = PublicPagesLayout;
+      if (name.startsWith("Public/UserDashboard/")) {
+        page.default.layout = UserDashboardLayout;
+      } else {
+        page.default.layout = PublicPagesLayout;
+      }
     }
     return page;
   },

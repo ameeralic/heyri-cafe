@@ -4,8 +4,8 @@ use App\Http\Controllers\AdminControllers\AdminDashboardController;
 use App\Http\Controllers\AdminControllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PublicPagesController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +16,7 @@ use Inertia\Inertia;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::name('public.')->group(function () {
     Route::get('/', [PublicPagesController::class, 'homePage'])->name('home');
@@ -32,6 +32,8 @@ Route::name('public.')->group(function () {
             Route::middleware('auth')->group(function () {
                 Route::prefix('/dashboard')->group(function () {
                     Route::get('/', [UserDashboardController::class, 'home'])->name('home');
+                    Route::get('/profile-info', [UserDashboardController::class, 'profileInfo'])->name('profile_info');
+                    Route::put('/profile-info/{user}', [UserController::class, 'update'])->name('profile_info_update');
                 });
             });
         });
@@ -39,11 +41,11 @@ Route::name('public.')->group(function () {
 });
 
 Route::name('admin.dashboard.')->group(function () {
-    Route::middleware('can:admin')->group(function () {
+    Route::middleware(['auth', 'role:ADMIN_ROLE'])->group(function () {
         Route::prefix('/admin-dashboard')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'home'])->name('home');
             Route::resource('/users', UserController::class)->except('show');
-            Route::get('/profile-info', [AdminDashboardController::class, 'profile_info'])->name('profile_info');
+            Route::get('/profile-info', [AdminDashboardController::class, 'profileInfo'])->name('profile_info');
             Route::put('/profile-info', [AdminDashboardController::class, 'update'])->name('profile_info_update');
         });
     });

@@ -1,52 +1,37 @@
 <template>
-    <h2>Chapters</h2>
-    <DeleteAlert
-        v-if="deleteId"
-        :id="deleteId"
-        @close="deleteId = false"
-        :url="'/admin-dashboard/users/'"
-        :text="'Deleting the user will permanently removed from the database. You can\'t recover the user again. Are you sure about deleting?'"
-    ></DeleteAlert>
+    <h2>Users</h2>
+    <DeleteAlert v-if="deleteId" :id="deleteId" @close="deleteId = false" :url="'/admin-dashboard/users/'"
+        :text="'Deleting the user will permanently removed from the database. You can\'t recover the user again. Are you sure about deleting?'">
+    </DeleteAlert>
     <TableLayout>
-        <Filters
-            :searchPlaceHolder="'Search by User ID, Name, Email ..'"
-            :filters="filters"
-            :currentPage="users.current_page"
-            :dataName="'users'"
-            :sortByFilters="{ dateSort: true }"
-            :enableFilters="{
+        <Filters :searchPlaceHolder="'Search by User ID, Name, Email ..'" :filters="filters"
+            :currentPage="users.current_page" :dataName="'users'" :sortByFilters="{ dateSort: true }" :enableFilters="{
                 search: true,
                 dateRange: true,
                 sortBy: true,
                 filterByFiltersEnabled: [
                     {
-                        name: 'Email',
-                        slug: 'email',
-                        valueKey:'email',
-                        nameKey: 'email',
-                        options: users,
+                        name: 'Roles',
+                        slug: 'roles',
+                        valueKey: 'value',
+                        nameKey: 'name',
+                        options: roles,
                     },
                 ],
-            }"
-        ></Filters>
-        <TableNew
-            :data="users.data"
-            :tableContent="[
-                { heading: 'Avatar', type: 'image', value: 'avatar_url' },
-                { heading: 'Name', type: 'text', value: 'full_name' },
-                { heading: 'Email', type: 'text', value: 'email' },
-                //{ heading: 'User role', type: 'relation', values: ['user_role','name'] },
-            ]"
-            :actionLinks="[{ link: 'admin-dashboard/users', name: 'Edit' }]"
-            :deleteEnable="true"
-            @deleteItem="(id) => deleteId = id"
-        ></TableNew>
+            }"></Filters>
+        <TableNew :data="users.data" :tableContent="[
+            { heading: 'Avatar', type: 'image', value: 'avatar_url' },
+            { heading: 'Name', type: 'text', value: 'full_name' },
+            { heading: 'Email', type: 'text', value: 'email' },
+            { heading: 'Role', type: 'relation', relationType: 'many', values: ['roles', 'name'] },
+        ]" :actionLinks="[{ link: 'admin-dashboard/users', name: 'Edit' }]" :deleteEnable="true"
+            @deleteItem="(id) => deleteId = id"></TableNew>
         <PageNavigation :data="users"></PageNavigation>
     </TableLayout>
 </template>
 <script>
 export default {
-    props: ["courses", "filters",'users'],
+    props: ["roles", "filters", 'users'],
     data() {
         return {
             deleteId: false,
