@@ -1,7 +1,7 @@
 <template>
     <Notification></Notification>
     <Header></Header>
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-4xl mx-auto px-4 min-h-screen">
         <DashboardHeader :navMenu="navMenu"></DashboardHeader>
         <slot></slot>
 
@@ -48,7 +48,7 @@ import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import Header from './Components/Header.vue'
 import DashboardHeader from './Components/DashboardHeader.vue';
-// import Footer from './Components/Footer.vue'
+import Footer from './Components/Footer.vue'
 
 // initialize components based on data attribute selectors
 onMounted(() => {

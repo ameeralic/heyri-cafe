@@ -7,6 +7,7 @@
             <div class="px-2 md:px-4  pt-4 pb-32 mt-14 min-h-screen">
                 <slot></slot>
             </div>
+            <Footer></Footer>
         </div>
     </NavSidebar>
 </template>
@@ -14,6 +15,8 @@
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 import NavSidebar from "./components/NavSidebar.vue";
+import Footer from "./components/Footer.vue";
+
 // import Sidebar from "./components/Sidebar.vue";
 import Notification from "./components/Notification.vue";
 import {
@@ -61,58 +64,6 @@ export default {
                     link: "/admin-dashboard",
                     method: "get",
                     icon: ChartPieIcon,
-                },
-                {
-                    name: "Teachers",
-                    link: "/admin-dashboard/teachers",
-                    method: "get",
-                    hideIf: !this.$page.props.is_admin_logged,
-                    icon: UserCircleIcon,
-                    subMenu: [
-                        {
-                            name: "Create",
-                            link: "/admin-dashboard/teachers/create",
-                        },
-                        {
-                            name: "All Teachers",
-                            link: "/admin-dashboard/teachers",
-                        },
-                    ],
-                },
-                {
-                    name: "Courses",
-                    link: "/admin-dashboard/courses",
-                    method: "get",
-                    icon: BookOpenIcon,
-                    hideIf: !this.$page.props.is_teacher_logged_has_course,
-                    subMenu: [
-                        {
-                            name: "Create",
-                            hideIf: !this.$page.props.is_admin_logged,
-                            link: "/admin-dashboard/courses/create",
-                        },
-                        {
-                            name: "All Courses",
-                            link: "/admin-dashboard/courses",
-                        },
-                    ],
-                },
-                {
-                    name: "Chapters",
-                    link: "/admin-dashboard/chapters",
-                    method: "get",
-                    icon: BookmarkIcon,
-                    hideIf: !this.$page.props.is_teacher_logged_has_course,
-                    subMenu: [
-                        {
-                            name: "Create",
-                            link: "/admin-dashboard/chapters/create",
-                        },
-                        {
-                            name: "All Chapters",
-                            link: "/admin-dashboard/chapters",
-                        },
-                    ],
                 },
                 {
                     name: "Users",

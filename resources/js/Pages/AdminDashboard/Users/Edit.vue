@@ -41,7 +41,7 @@
                 </FormSimpleInput>
             </div>
             <div class="flex flex-col md:flex-row gap-6" v-if="this.user.id !== $page.props.logged_user.id">
-                <p class="text-sm font-medium">Assign User Roles:</p>
+                <p class="block text-sm font-medium text-gray-900 dark:text-white">Assign User Roles:</p>
                 <div class="flex items-center" v-for="role in roles" :key="role">
                     <input type="checkbox" :id="role.name" :value="role.id" v-model="userInfo.roles"
                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
