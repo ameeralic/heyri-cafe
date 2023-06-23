@@ -43,7 +43,7 @@ class UserController extends Controller
             );
         }
 
-        if ($attributes['roles']) {
+        if (isset($attributes['roles'])) {
             $roles = $attributes['roles'];
             unset($attributes['roles']);
         }
@@ -51,9 +51,10 @@ class UserController extends Controller
         $user = User::create($attributes);
 
         if (isset($roles)) {
-            $user->roles()->attach($roles);
+            $user->roles()->sync($roles);
         }
-        $user->roles()->sync([1]);
+
+        $user->roles()->attach([1]);
 
         if (Auth::guard('web')->check()) {
             if (Auth::user()->can('admin')) {
