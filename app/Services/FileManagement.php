@@ -10,8 +10,7 @@ class FileManagement
         string $path,
         $file = null,
         array $files = null,
-        array $appendFilesTo = array(), bool $deleteOldFile = false, string $oldFile = null, string $storeAsName = '')
-    {
+        array $appendFilesTo = array(), bool $deleteOldFile = false, string $oldFile = null, string $storeAsName = '') {
         if (!empty($files)) {
             foreach ($files as $file) {
                 if (is_file($file)) {
@@ -48,7 +47,7 @@ class FileManagement
 
     public function deleteFile(string $fileUrl, array $oldFilesArray = array())
     {
-        if(isset(parse_url($fileUrl)['host'])){
+        if (isset(parse_url($fileUrl)['host'])) {
             $extFileLink = $fileUrl;
         }
         // dd(Storage::disk('public')->exists($fileUrl));
@@ -76,9 +75,9 @@ class FileManagement
 
     public function moveFiles(string $oldPath, string $newPath, string $deleteDirectory = '')
     {
-        Storage::move($oldPath, $newPath);
+        Storage::disk('public')->move($oldPath, $newPath);
         if (!empty($deleteDirectory)) {
-            Storage::deleteDirectory($deleteDirectory);
+            Storage::disk('public')->deleteDirectory($deleteDirectory);
         }
     }
 }

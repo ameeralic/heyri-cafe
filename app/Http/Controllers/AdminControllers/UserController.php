@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\FileManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -117,6 +118,15 @@ class UserController extends Controller
         $user->update($attributes);
 
         return back()->with('success', 'User Profile Updated!');
+    }
+
+    public function destroy(User $user)
+    {
+        // dd($teacher->course->all());
+        $user->delete();
+        Storage::disk('public')->deleteDirectory('images/users/' . $user['email']);
+
+        return redirect('/admin-dashboard/users')->with('success', 'User Deleted!');
     }
 
     protected function validateUser( ? User $user = null) : array
