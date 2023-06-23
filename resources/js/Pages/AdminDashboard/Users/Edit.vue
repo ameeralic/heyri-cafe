@@ -40,7 +40,7 @@
                     v-model="userInfo.password_confirmation" :error="errors.password">
                 </FormSimpleInput>
             </div>
-            <div class="flex flex-col md:flex-row gap-6" v-if="this.user.id !== $page.props.logged_user.id">
+            <div class="flex flex-col md:flex-row gap-6" v-if="user.id !== $page.props.logged_user.id">
                 <p class="block text-sm font-medium text-gray-900 dark:text-white">Assign User Roles:</p>
                 <div class="flex items-center" v-for="role in roles" :key="role">
                     <input type="checkbox" :id="role.name" :value="role.id" v-model="userInfo.roles"
