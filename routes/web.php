@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('public.')->group(function () {
     Route::get('/', [PublicPagesController::class, 'homePage'])->name('home');
-    Route::get('/about', [PublicPagesController::class, 'aboutPage'])->name('about');
+    Route::get('/order-now', [PublicPagesController::class, 'orderNowPage'])->name('order_now');
     Route::get('/contact', [PublicPagesController::class, 'contactPage'])->name('contact');
     Route::name('account.')->group(function () {
         Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');

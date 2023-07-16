@@ -12,9 +12,9 @@ class PublicPagesController extends Controller
         return Inertia::render('Public/Home');
     }
 
-    public function aboutPage()
+    public function orderNowPage()
     {
-        return Inertia::render('Public/About');
+        return Inertia::render('Public/OrderNow');
     }
 
     public function contactPage()

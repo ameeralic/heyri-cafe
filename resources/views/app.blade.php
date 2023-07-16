@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -14,9 +14,14 @@
           document.documentElement.classList.remove('dark')
       }
   </script>
+  <style>
+    html {
+  scroll-behavior: smooth;
+}
+  </style>
   </head>
-  <body class="bg-gray-50 dark:bg-gray-900">
-    <button
+  <body class="bg-bgGreen scroll-smooth">
+    <!-- <button
     id="theme-toggle"
     type="button"
     class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 dark:bg-gray-800 fixed bottom-5 right-5"
@@ -45,7 +50,7 @@
             clip-rule="evenodd"
         ></path>
     </svg>
-</button>
+</button> -->
     @inertia
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
     <script>
