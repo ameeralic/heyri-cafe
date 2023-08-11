@@ -1,10 +1,6 @@
 <template>
-    <img
-        src="/static/home-hero.png"
-        class="w-3/4 md:w-1/2 mx-auto mb-10 md:mb-20"
-        alt=""
-    />
-    <img :src="$page.props.siteLogo" class="h-24 mx-auto" alt="" />
+    <img :src="'/static/home-hero.png'" class="w-3/4 md:w-1/2 mx-auto mb-10 md:mb-20" alt="" />
+    <!-- <img :src="$page.props.siteLogo" class="h-24 mx-auto" alt="" /> -->
     <p class="font-merienda font-bold text-xl text-center mb-10 mx-auto">
         heyri cafe
     </p>
@@ -17,10 +13,7 @@
         and the warm ambiance of our plant-filled patio, where you can bask in
         the beauty of nature while savoring your favorite treats.
     </p>
-    <p
-        class="font-merienda font-bold text-xl text-center mb-5 mx-auto"
-        id="menu"
-    >
+    <p class="font-merienda font-bold text-xl text-center mb-5 mx-auto" id="menu">
         Menu
     </p>
     <p class="w-1/2 text-center mx-auto font-bold my-4 text-xl underline">
